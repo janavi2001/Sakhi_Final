@@ -30,4 +30,5 @@ flutter:
 
   assets:
    - assets/images/logo.png
+   - assets/images/avatar.png
   #C:\Users\janav\OneDrive\Desktop\Projects\flutter_firebase_auth_tutorial\assets\logo.jpeg

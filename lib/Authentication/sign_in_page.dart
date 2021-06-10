@@ -1,4 +1,5 @@
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
+import 'package:firebase_authentication_tutorial/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,78 +46,82 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: ListView(
+      body: Container(
+        margin: EdgeInsets.all(16),
         padding: EdgeInsets.symmetric(horizontal: 18.0),
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: 120,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 50),
+            Expanded(flex: 5, child: Image.asset('assets/images/logo.png')),
+            Expanded(
+              flex: 2,
+              child: Text(
+                'Login',
+                style: TextStyle(fontSize: 25, color: headingColor),
               ),
-              Container(
-              height:200,
-              child:Image.asset('assets/images/logo.png',
-              fit:BoxFit.cover),),
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Sakhi Login',
-                style: TextStyle(fontSize: 25, color: Colors.yellow[600]),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 60.0,
-          ),
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              labelText: "Email",
-              labelStyle: TextStyle(fontSize: 20),
-              filled: true,
             ),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: "Password",
-              labelStyle: TextStyle(fontSize: 20),
-              filled: true,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: <Widget>[
-              ButtonTheme(
-                buttonColor: Colors.yellow[600],
-                height: 50,
-                disabledColor: Colors.yellow[600],
-                child: RaisedButton(
-                  disabledElevation: 4.0,
-                  onPressed: () {
-                    context.read<AuthenticationService>().signIn(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                  },
-                  child: Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+            SizedBox(height: 15),
+            Expanded(
+              flex: 2,
+              child: TextField(
+                style: TextStyle(color: textColor),
+                controller: emailController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
                   ),
+                  labelText: "Email",
+                  labelStyle: TextStyle(fontSize: 20, color: textColor),
+                  filled: true,
                 ),
-              )
-            ],
-          )
-        ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Expanded(
+              flex: 2,
+              child: TextField(
+                style: TextStyle(color: textColor),
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  labelText: "Password",
+                  labelStyle: TextStyle(fontSize: 20),
+                  filled: true,
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            Expanded(
+              flex: 1,
+              child: ElevatedButton(
+                child: Text('Login',
+                    style: TextStyle(fontSize: 18, color: headingColor)),
+                onPressed: () {
+                  String currentlyLoggedIn = emailController.text.trim();
+                  print(currentlyLoggedIn);
+                  context.read<AuthenticationService>().signIn(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+                },
+                style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                    primary: yellowTheme,
+                    textStyle: TextStyle(fontSize: 18, color: headingColor)),
+              ),
+            ),
+            SizedBox(height: 50),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
