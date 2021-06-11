@@ -1,4 +1,6 @@
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
+import '/Screens/HealthForm/HealthForm.dart';
+import '/Screens/PersonalForm/PersonalForm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
@@ -136,6 +138,10 @@ class VolunteerPageState extends State<VolunteerPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //TODO: NAVIGATE TO ADD PATIENT HERE
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PersonalForm()),
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: yellowTheme,
@@ -175,7 +181,11 @@ class VolunteerPageState extends State<VolunteerPage> {
                 IconButton(
                   icon: Icon(Icons.edit, color: textColor),
                   onPressed: () {
-                    //TODO: NAVIGATE TO PRESCRIPTIONS PAGE
+                    //TODO: NAVIGATE TO EDIT DETAILS PAGE
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HealthForm()),
+                    );
                   },
                 ),
                 IconButton(

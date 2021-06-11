@@ -46,6 +46,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Container(
         margin: EdgeInsets.all(16),
         padding: EdgeInsets.symmetric(horizontal: 18.0),

@@ -29,13 +29,28 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Sakhi',
-        theme: ThemeData.light().copyWith(
-          appBarTheme: AppBarTheme(
-            color: yellowTheme,
-          ),
+        theme: ThemeData.dark().copyWith(
+          primaryColor: bgColor,
           scaffoldBackgroundColor: bgColor,
           accentColor: yellowTheme,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(
+                fontSize: 72.0,
+                fontWeight: FontWeight.bold,
+                color: headingColor),
+            headline6: TextStyle(
+                fontSize: 36.0,
+                fontStyle: FontStyle.italic,
+                color: headingColor),
+            bodyText2: TextStyle(fontSize: 14.0, color: textColor),
+            bodyText1: TextStyle(fontSize: 14.0, color: textColor),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(headingColor),
+              backgroundColor: MaterialStateProperty.all<Color>(yellowTheme),
+            ),
+          ),
         ),
         home: AuthenticationWrapper(),
       ),
