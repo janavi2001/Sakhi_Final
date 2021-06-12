@@ -53,15 +53,27 @@ class _HealthFormState extends State<HealthForm> {
               labelText: 'Blood Group',
               icon: Icon(Icons.bloodtype),
             ),
-            BuildTextField(
-              controller: hbCounts,
-              labelText: 'HB Counts',
+            Row(
+              children: [
+                NumberField(
+                  controller: hbCounts,
+                  labelText: 'HB Counts',
+                ),
+                NumberField(controller: pulse, labelText: 'Pulse'),
+              ],
             ),
-            BuildTextField(controller: bp, labelText: 'Blood Pressure'),
-            BuildTextField(controller: sugarLevel, labelText: 'Sugar Level'),
-            BuildTextField(controller: oxygenLevel, labelText: 'Oxygen Level'),
-            BuildTextField(controller: pulse, labelText: 'Pulse'),
-            BuildTextField(controller: temperature, labelText: 'Temperature'),
+            Row(
+              children: [
+                NumberField(controller: sugarLevel, labelText: 'Sugar Level'),
+                NumberField(controller: oxygenLevel, labelText: 'Oxygen Level'),
+              ],
+            ),
+            Row(
+              children: [
+                NumberField(controller: bp, labelText: 'Blood Pressure'),
+                NumberField(controller: temperature, labelText: 'Temperature'),
+              ],
+            ),
             Row(
               children: <Widget>[
                 NumberField(controller: height, labelText: 'Height'),

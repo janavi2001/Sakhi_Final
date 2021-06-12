@@ -16,7 +16,7 @@ class BuildIconField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 120,
       padding: EdgeInsets.all(20),
       child: Theme(
         data: ThemeData(

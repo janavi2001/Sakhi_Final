@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(yellowTheme),
             ),
           ),
+          
         ),
         home: AuthenticationWrapper(),
       ),
