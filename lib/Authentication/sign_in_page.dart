@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
+import 'package:firebase_authentication_tutorial/Authentication/home_page.dart';
+import 'package:firebase_authentication_tutorial/VolunteerPage/VolunteerPage.dart';
 import 'package:firebase_authentication_tutorial/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +45,7 @@ import 'package:provider/provider.dart';
 class SignInPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +112,26 @@ class SignInPage extends StatelessWidget {
                 onPressed: () {
                   String currentlyLoggedIn = emailController.text.trim();
                   print(currentlyLoggedIn);
-                  context.read<AuthenticationService>().signIn(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
+                  AuthenticationService(_firebaseAuth)
+                      .signIn(
+                          email: currentlyLoggedIn,
+                          password: passwordController.text.trim())
+                      .then((value) {
+                    if (value == "Signed in") {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VolunteerPage()),
+                          (route) => false);
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(value)));
+                    }
+                  });
+                  // context.read<AuthenticationService>().signIn(
+                  //       email: emailController.text.trim(),
+                  //       password: passwordController.text.trim(),
+                  //     );
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 4,

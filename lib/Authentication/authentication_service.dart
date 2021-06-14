@@ -24,9 +24,26 @@ class AuthenticationService {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+          if (e.code == 'user-not-found') {
+        return 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        return 'Wrong password provided for that user.';
+      }
+      return"Error";
+      
     }
   }
+  // try {
+  //     await auth.signInWithEmailAndPassword(email: email, password: password);
+  //     return "Welcome";
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'user-not-found') {
+  //       return 'No user found for that email.';
+  //     } else if (e.code == 'wrong-password') {
+  //       return 'Wrong password provided for that user.';
+  //     }
+  //     return"Error";
+  // //   }
 
   /// There are a lot of different ways on how you can do exception handling.
   /// This is to make it as easy as possible but a better way would be to

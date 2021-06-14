@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
 import '/Screens/HealthForm/HealthForm.dart';
 import '/Screens/PersonalForm/PersonalForm.dart';
@@ -13,7 +14,7 @@ class VolunteerPage extends StatefulWidget {
 class VolunteerPageState extends State<VolunteerPage> {
   /*for filtering search in app bar*/
   final TextEditingController _filter = new TextEditingController();
-
+  String user = FirebaseAuth.instance.currentUser.email;
   String currentlyLoggedIn = "manali"; //After authentication?
 
   String _searchText = ""; //decalring search string
@@ -80,8 +81,7 @@ class VolunteerPageState extends State<VolunteerPage> {
               decoration: BoxDecoration(
                 color: bgColor,
               ),
-              accountName:
-                  Text(currentlyLoggedIn, style: TextStyle(color: textColor)),
+              accountName: Text(user, style: TextStyle(color: textColor)),
               accountEmail: Text('Volunteer unique ID',
                   style: TextStyle(color: textColor)),
               currentAccountPicture: CircleAvatar(

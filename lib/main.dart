@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
 import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
@@ -70,3 +71,22 @@ class AuthenticationWrapper extends StatelessWidget {
     return SignInPage();
   }
 }
+
+/*import 'package:firebase_authentication_tutorial/PersonalDetailsForm/body.dart';
+import 'package:flutter/material.dart';
+
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Coding with Curry',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+      ),
+      home: FormScreen(),
+    );
+  }
+}*/
