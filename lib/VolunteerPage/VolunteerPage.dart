@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
+import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
 import '/Screens/HealthForm/HealthForm.dart';
 import '/Screens/PersonalForm/PersonalForm.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,10 @@ class VolunteerPage extends StatefulWidget {
 class VolunteerPageState extends State<VolunteerPage> {
   /*for filtering search in app bar*/
   final TextEditingController _filter = new TextEditingController();
-  String user = FirebaseAuth.instance.currentUser.email;
+  String useremail = FirebaseAuth.instance.currentUser.email;
+  String userid = FirebaseAuth.instance.currentUser.uid;
+  String firstname;
+
   String currentlyLoggedIn = "manali"; //After authentication?
 
   String _searchText = ""; //decalring search string
@@ -48,6 +53,7 @@ class VolunteerPageState extends State<VolunteerPage> {
   }
 
 //TODO: Get this list of names from database for currenlty logged in volunteer
+  CollectionReference ref = FirebaseFirestore.instance.collection('Volunter');
 
   List patients = ['Patient1', 'Patient2', 'Patient3', 'Patient4', 'Patient5'];
 
@@ -64,12 +70,37 @@ class VolunteerPageState extends State<VolunteerPage> {
       filteredNames = names;
     });
   }
+  void initiateSearch(String val) {
+    setState(() {
+      name = val.trim().toLowerCase();
+    });
+    print(name);
+  }
+  Stream<QuerySnapshot> _ifhasvalue() {
+    
+      return FirebaseFirestore.instance
+                  .collection("Volunter").doc(userid).collection('Patient')
+                  .where("firstName", isGreaterThanOrEqualTo : name)
+                  .snapshots();
+
+    }
+  
+  Stream<QuerySnapshot> ifhasnovalue() {
+    return FirebaseFirestore.instance
+        .collection("Volunter")
+        .doc(userid)
+        .collection('Patient')
+        .snapshots();
+  }
 
   @override
   void initState() {
     this._getNames(); //initialising list of names and state
     super.initState();
   }
+  
+  String name='';
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,9 +112,8 @@ class VolunteerPageState extends State<VolunteerPage> {
               decoration: BoxDecoration(
                 color: bgColor,
               ),
-              accountName: Text(user, style: TextStyle(color: textColor)),
-              accountEmail: Text('Volunteer unique ID',
-                  style: TextStyle(color: textColor)),
+              accountName: Text(useremail, style: TextStyle(color: textColor)),
+              accountEmail: Text(userid, style: TextStyle(color: textColor)),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: ExactAssetImage("assets/images/avatar.png"),
                 backgroundColor: headingColor,
@@ -115,7 +145,10 @@ class VolunteerPageState extends State<VolunteerPage> {
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
                 context.read<AuthenticationService>().signOut();
-                Navigator.pop(context);
+                 Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInPage()),
+                      (route) => false);
               },
             ),
           ],
@@ -123,18 +156,67 @@ class VolunteerPageState extends State<VolunteerPage> {
       ),
       appBar: AppBar(
           centerTitle: true,
-          title: _appBarTitle,
+          title: TextField(onChanged: (value)=>initiateSearch(value),),
           iconTheme: IconThemeData(color: headingColor),
-          actions: [
-            IconButton(
-              icon: _searchIcon,
-              onPressed:
-                  _searchPressed, //execute _searchPressed function on clicking search icon
-            ),
-          ]),
-      body: Container(
-        child: _buildList(),
-      ),
+          ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: name!=''? _ifhasvalue() : ifhasnovalue(),
+          
+              
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Text('Loading...');
+              default:
+                return new ListView(
+                  children:
+                      snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Card(
+                    //each patient displayed in a new card
+                    color: bgColor,
+                    elevation: 1,
+                    child: ListTile(
+                      tileColor: bgColor,
+                      title: Text("Name:${document['firstName']}",
+                          style: TextStyle(color: textColor)),
+                      subtitle: Text("Age:${document['age']}",
+                          style: TextStyle(color: textColor)), //can change this
+                      trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit, color: textColor),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HealthForm(document['firstName'])),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.medication, color: textColor),
+                              onPressed: () {
+                                //TODO: NAVIGATE TO PRESCRIPTIONS PAGE
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.keyboard_arrow_right_sharp,
+                                  color: textColor),
+                              onPressed: () {
+                                //TODO: NAVIGATE TO PERSONAL/HEALTH DETAILS PAGE
+                              },
+                            ),
+                          ]),
+                    ),
+                  );
+                  }).toList(),
+                );
+            }
+          },
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //TODO: NAVIGATE TO ADD PATIENT HERE
@@ -148,84 +230,5 @@ class VolunteerPageState extends State<VolunteerPage> {
       ),
       resizeToAvoidBottomInset: false,
     );
-  }
-
-  Widget _buildList() {
-    if (!(_searchText == "")) {
-      List tempList = [];
-      for (int i = 0; i < filteredNames.length; i++) {
-        if (filteredNames[i]
-            .toLowerCase()
-            .contains(_searchText.toLowerCase())) //case insesnsitive searching
-        {
-          tempList.add(
-              filteredNames[i]); //if found add the filtered names to templist
-        }
-      }
-      filteredNames = tempList; //update the fitered list
-    }
-    return ListView.builder(
-        itemCount: names == null ? 0 : filteredNames.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            //each patient displayed in a new card
-            color: bgColor,
-            elevation: 1,
-            child: ListTile(
-              tileColor: bgColor,
-              title: Text(filteredNames[index],
-                  style: TextStyle(color: textColor)),
-              subtitle: Text("00-7 ID",
-                  style: TextStyle(color: textColor)), //can change this
-              trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.edit, color: textColor),
-                  onPressed: () {
-                    //TODO: NAVIGATE TO EDIT DETAILS PAGE
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HealthForm()),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.medication, color: textColor),
-                  onPressed: () {
-                    //TODO: NAVIGATE TO PRESCRIPTIONS PAGE
-                  },
-                ),
-                IconButton(
-                  icon:
-                      Icon(Icons.keyboard_arrow_right_sharp, color: textColor),
-                  onPressed: () {
-                    //TODO: NAVIGATE TO PERSONAL/HEALTH DETAILS PAGE
-                  },
-                ),
-              ]),
-            ),
-          );
-        });
-  }
-
-  void _searchPressed() {
-    setState(() {
-      //based on which icon is pressed either search or display normal app bar title
-      if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close, color: textColor);
-        this._appBarTitle = new TextField(
-          controller: _filter,
-          decoration: new InputDecoration(
-              prefixIcon: new Icon(Icons.search, color: textColor),
-              hintText: '  Search...',
-              hintStyle: TextStyle(color: textColor)),
-        );
-      } else {
-        this._searchIcon = new Icon(Icons.search, color: textColor);
-        this._appBarTitle =
-            Text('My Patients', style: TextStyle(color: headingColor));
-        filteredNames = names;
-        _filter.clear();
-      }
-    });
   }
 }

@@ -1,14 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+
 import '/components/checkbox.dart';
 import '/screens/HealthForm/mental.dart';
 import '/constants.dart';
 import 'package:flutter/material.dart';
 
-class PhysicalHealthForm extends StatefulWidget {
+class PhysicalHealth extends StatefulWidget {
+  final String firstname;
+  PhysicalHealth(this.firstname, {Key key}): super(key: key);
   @override
-  _PhysicalHealthFormState createState() => _PhysicalHealthFormState();
+  _PhysicalHealthState createState() => _PhysicalHealthState();
 }
 
-class _PhysicalHealthFormState extends State<PhysicalHealthForm> {
+class _PhysicalHealthState extends State<PhysicalHealth> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String user = FirebaseAuth.instance.currentUser.uid;
   //final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   bool tiredness = false;
@@ -25,8 +34,62 @@ class _PhysicalHealthFormState extends State<PhysicalHealthForm> {
   bool chestPain = false;
   bool lossMovement = false;
   bool lossSpeech = false;
+  String now = formatDate(DateTime(1989, 02, 21), [yyyy, '-', mm, '-', dd]);
 
   final _formKey = GlobalKey<FormState>();
+  void _create() async {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    try {
+      await firestore.collection('Volunter').doc(user).collection('Patient').doc(widget.firstname.toString()).collection('Health_Record').doc(formattedDate).update
+      ({
+        'tiredness':tiredness,
+        'pains':pains,
+        'soreThroat':soreThroat,
+        'diarrhoea':diarrhoea,
+        'conjuctivitis':conjuctivitis,
+        'headache':headache,
+        'lossTaste':lossTaste,
+        'lossSmell':lossSmell,
+        'discoloration':discoloration,
+        'rash':rash,
+        'breathe':breathe,
+        'chestPain':chestPain,
+        'lossMovement':lossMovement,
+        'lossSpeech':lossSpeech
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+       
+
+
+
+
+
+
+
+      });
+    
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,10 +250,11 @@ class _PhysicalHealthFormState extends State<PhysicalHealthForm> {
                           return;
                         }
                         _formKey.currentState.save();
+                        _create();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MentalHealthForm()),
+                                builder: (context) => MentalHealthForm(widget.firstname)),
                           );
                         }),
                   ],

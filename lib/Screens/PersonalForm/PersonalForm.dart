@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_authentication_tutorial/VolunteerPage/VolunteerPage.dart';
 import 'package:firebase_authentication_tutorial/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +24,33 @@ class PersonalFormState extends State<PersonalForm> {
   String _MarriageStatus;
   String _PhoneNumber;
   String _Address;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String user = FirebaseAuth.instance.currentUser.uid;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  void _create() async {
+    try {
+      await firestore.collection('Volunter').doc(user).collection('Patient').doc(_PatientName).set({
+        'firstName': _PatientName.toLowerCase(),
+        'village': _VillageName,
+        'caste': _Caste,
+        'family': _FamilyMembers,
+        'education': _Education,
+        'age': _Age,
+        'phone': _PhoneNumber,
+        'address':_Address,
+        'marriage':_MarriageStatus,
+        'profession':_Profession,
+        'working class':_WorkingClass,
+        'gender':_Gender
+        
+
+      });
+      print('add to firebase');
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Widget _buildVillageName() {
     return Padding(
@@ -412,6 +440,12 @@ class PersonalFormState extends State<PersonalForm> {
                       }
 
                       _formKey.currentState.save();
+                      
+                      _create();
+                      Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => VolunteerPage()),
+                    (route) => false);
                     },
                   ),
                   SizedBox(

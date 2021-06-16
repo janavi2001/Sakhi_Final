@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -12,7 +13,10 @@ class AuthenticationService {
   /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   /// after you called this method if you want to pop all routes.
   Future<void> signOut() async {
+    
     await _firebaseAuth.signOut();
+    
+    print('janavi is fool');
   }
 
   /// There are a lot of different ways on how you can do exception handling.

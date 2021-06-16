@@ -1,15 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+
 import '/components/checkbox.dart';
 import '/VolunteerPage/VolunteerPage.dart';
 import '/constants.dart';
 import 'package:flutter/material.dart';
 
 class MentalHealthForm extends StatefulWidget {
+  final String firstname;
+  MentalHealthForm(this.firstname, {Key key}): super(key: key);
   @override
   _MentalHealthFormState createState() => _MentalHealthFormState();
 }
 
 class _MentalHealthFormState extends State<MentalHealthForm> {
   //final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String user = FirebaseAuth.instance.currentUser.uid;
 
   bool concentration = false;
   bool lossSleep = false;
@@ -24,8 +33,49 @@ class _MentalHealthFormState extends State<MentalHealthForm> {
   bool confidence = false;
   bool worthless = false;
   bool happy = false;
+  
 
   final _formKey = GlobalKey<FormState>();
+  void _create() async {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    try {
+      await firestore.collection('Volunter').doc(user).collection('Patient').doc(widget.firstname.toString()).collection('Health_Record').doc(formattedDate).update
+      ({
+        'concentration':concentration,
+        'lossSleep':lossSleep,
+        'useful':useful,
+        'decisions':decisions,
+        'stress':stress,
+        'difficulty':difficulty,
+        'enjoy':enjoy,
+        'problems':problems,
+        'unhappy':unhappy,
+        'depressed':depressed,
+        'confidence':confidence,
+        'worthless':worthless,
+        'happy':happy
+
+
+
+
+
+ 
+       
+
+
+
+
+
+
+
+      });
+    
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +218,7 @@ class _MentalHealthFormState extends State<MentalHealthForm> {
                               return;
                             }
                             _formKey.currentState.save();
+                            _create();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
