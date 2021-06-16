@@ -64,7 +64,7 @@ class FormScreenState extends State<FormScreen> {
       validator: (String value) {
         int Age = int.tryParse(value);
 
-        if (Age == null || Age <= 0 || Age > 100) {
+        if (Age == null || Age <= 0|| Age>100) {
           return 'Enter a valid age';
         }
 
@@ -79,6 +79,7 @@ class FormScreenState extends State<FormScreen> {
   Widget _buildEducation() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Education'),
+      
       validator: (String value) {
         if (value.isEmpty) {
           return 'Education is Required';
@@ -117,7 +118,7 @@ class FormScreenState extends State<FormScreen> {
         // ignore: non_constant_identifier_names
         int FamilyMembers = int.tryParse(value);
 
-        if (FamilyMembers == null || FamilyMembers < 20) {
+        if (FamilyMembers == null || FamilyMembers<20) {
           return 'Enter a Valid number';
         }
 
@@ -129,24 +130,30 @@ class FormScreenState extends State<FormScreen> {
     );
   }
 
+  
+
   Widget _buildGender() {
+   
+    
+
     var valueChoose;
-    List listitem = ['Male', 'Female', 'Others'];
+    List listitem=['Male','Female','Others'];
     return Container(
       child: DropdownButton(
         hint: Text('Select Items:'),
         icon: Icon(Icons.arrow_drop_down),
         iconSize: 36,
         value: valueChoose,
-        onChanged: (newvalue) {
+        onChanged: (newvalue){
           setState(() {
-            valueChoose = newvalue;
+            valueChoose=newvalue;
           });
+
         },
-        items: listitem.map((valueitem) {
+        items: listitem.map((valueitem){
           return DropdownMenuItem(
-            value: valueitem,
-            child: Text(valueitem),
+            value:valueitem,
+            child:Text(valueitem),
           );
         }).toList(),
       ),
@@ -188,26 +195,19 @@ class FormScreenState extends State<FormScreen> {
   }
 
   Widget _buildMarriageStatus() {
-    var valueChoose;
-    List listitem = ['Married', 'Unmarried', 'Others'];
-    return Container(
-      child: DropdownButton(
-        hint: Text('Select Items:'),
-        icon: Icon(Icons.arrow_drop_down),
-        iconSize: 36,
-        value: valueChoose,
-        onChanged: (newvalue) {
-          setState(() {
-            valueChoose = newvalue;
-          });
-        },
-        items: listitem.map((valueitem) {
-          return DropdownMenuItem(
-            value: valueitem,
-            child: Text(valueitem),
-          );
-        }).toList(),
-      ),
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Marriage Status'),
+      maxLength: 10,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Marriage Status is Required';
+        }
+
+        return null;
+      },
+      onSaved: (String value) {
+        _MarriageStatus = value;
+      },
     );
   }
 
