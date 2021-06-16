@@ -2,26 +2,19 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '/components/dropdown.dart';
 import 'package:intl/intl.dart';
-
-
-
-import '/components/dropdown_field.dart';
 import '/components/number_field.dart';
 import '/screens/HealthForm/physical.dart';
 import '/constants.dart';
 import 'package:flutter/material.dart';
-import '/components/normal_textfield.dart';
-import '/components/icon_textfield.dart';
-
 
 class HealthForm extends StatefulWidget {
   final String firstname;
-  HealthForm(this.firstname, {Key key}): super(key: key);
+  HealthForm(this.firstname, {Key key}) : super(key: key);
   @override
   _HealthFormState createState() => _HealthFormState();
 }
@@ -29,9 +22,9 @@ class HealthForm extends StatefulWidget {
 class _HealthFormState extends State<HealthForm> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String user = FirebaseAuth.instance.currentUser.uid;
-  
-  TextEditingController disability = TextEditingController();
-  TextEditingController bloodGroup = TextEditingController();
+
+  String disability = 'Other';
+  String bloodGroup = 'Other';
   TextEditingController hbCounts = TextEditingController();
   TextEditingController bp = TextEditingController();
   TextEditingController sugarLevel = TextEditingController();
@@ -40,7 +33,6 @@ class _HealthFormState extends State<HealthForm> {
   TextEditingController temperature = TextEditingController();
   TextEditingController weight = TextEditingController();
   TextEditingController height = TextEditingController();
-  
 
   final _formKey = GlobalKey<FormState>();
   void _create() async {
@@ -49,22 +41,26 @@ class _HealthFormState extends State<HealthForm> {
     String formattedDate = formatter.format(now);
     print(formattedDate);
     try {
-      await firestore.collection('Volunter').doc(user).collection('Patient').doc(widget.firstname.toString()).collection('Health_Record').doc(formattedDate).set
-      ({
-        'disability':disability.text.trim(),
-        'bloodGroup':bloodGroup.text.trim(),
-        'hbCounts':hbCounts.text.trim(),
-        'bp':bp.text.trim(),
-        'sugarLevel':sugarLevel.text.trim(),
-        'oxygenLevel':oxygenLevel.text.trim(),
-        'pulse':pulse.text.trim(),
-        'temperature':temperature.text.trim(),
-        'weight':weight.text.trim(),
-        'height':height.text.trim()
-
-
+      await firestore
+          .collection('Volunter')
+          .doc(user)
+          .collection('Patient')
+          .doc(widget.firstname.toString())
+          .collection('Health_Record')
+          .doc(formattedDate)
+          .set({
+        'disability': disability,
+        'bloodGroup': bloodGroup,
+        'hbCounts': hbCounts.text.trim(),
+        'bp': bp.text.trim(),
+        'sugarLevel': sugarLevel.text.trim(),
+        'oxygenLevel': oxygenLevel.text.trim(),
+        'pulse': pulse.text.trim(),
+        'temperature': temperature.text.trim(),
+        'weight': weight.text.trim(),
+        'height': height.text.trim(),
       });
-    print(widget.firstname.toString());
+      print(widget.firstname.toString());
     } catch (e) {
       print(e);
     }
@@ -83,15 +79,29 @@ class _HealthFormState extends State<HealthForm> {
           key: _formKey,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
               Widget>[
-            BuildIconField(
-              controller: disability,
-              labelText: 'Any Disability?',
-              icon: Icon(Icons.wheelchair_pickup),
+            MyDropdown(
+              dropList: ['Other', 'Yes', 'No', 'Maybe'],
+              labelText: 'Disability:',
+              onSelected: (String val) {
+                setState(() => disability = val);
+              },
             ),
-            BuildIconField(
-              controller: bloodGroup,
-              labelText: 'Blood Group',
-              icon: Icon(Icons.bloodtype),
+            MyDropdown(
+              dropList: [
+                'Other',
+                'A+',
+                'A-',
+                'B+',
+                'B-',
+                'O+',
+                'O-',
+                'AB+',
+                'AB-',
+              ],
+              labelText: 'Blood Group:',
+              onSelected: (String val) {
+                setState(() => bloodGroup = val);
+              },
             ),
             Row(
               children: [
@@ -140,12 +150,11 @@ class _HealthFormState extends State<HealthForm> {
                         }
                         _formKey.currentState.save();
                         _create();
-                        
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>PhysicalHealth(widget.firstname))
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PhysicalHealth(widget.firstname)));
                       }),
                 ],
               ),

@@ -30,7 +30,12 @@ class PersonalFormState extends State<PersonalForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   void _create() async {
     try {
-      await firestore.collection('Volunter').doc(user).collection('Patient').doc(_PatientName).set({
+      await firestore
+          .collection('Volunter')
+          .doc(user)
+          .collection('Patient')
+          .doc(_PatientName)
+          .set({
         'firstName': _PatientName.toLowerCase(),
         'village': _VillageName,
         'caste': _Caste,
@@ -38,13 +43,11 @@ class PersonalFormState extends State<PersonalForm> {
         'education': _Education,
         'age': _Age,
         'phone': _PhoneNumber,
-        'address':_Address,
-        'marriage':_MarriageStatus,
-        'profession':_Profession,
-        'working class':_WorkingClass,
-        'gender':_Gender
-        
-
+        'address': _Address,
+        'marriage': _MarriageStatus,
+        'profession': _Profession,
+        'working class': _WorkingClass,
+        'gender': _Gender
       });
       print('add to firebase');
     } catch (e) {
@@ -85,7 +88,7 @@ class PersonalFormState extends State<PersonalForm> {
       padding: EdgeInsets.all(10),
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: ' Patient Name',
+          labelText: 'Patient Name',
           labelStyle: TextStyle(color: textColor),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
@@ -428,8 +431,14 @@ class PersonalFormState extends State<PersonalForm> {
                   _buildProfession(),
                   _buildWorkingClass(),
                   _buildMarriageStatus(),
-                  SizedBox(height: 100),
+                  SizedBox(height: 10),
                   ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(yellowTheme),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(textColor),
+                    ),
                     child: Text(
                       'Submit',
                       style: TextStyle(color: textColor, fontSize: 18),
@@ -440,12 +449,13 @@ class PersonalFormState extends State<PersonalForm> {
                       }
 
                       _formKey.currentState.save();
-                      
+
                       _create();
                       Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => VolunteerPage()),
-                    (route) => false);
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VolunteerPage()),
+                          (route) => false);
                     },
                   ),
                   SizedBox(

@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
 import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Sakhi',
-        theme: ThemeData.dark().copyWith(
+        theme: ThemeData.light().copyWith(
           primaryColor: bgColor,
           scaffoldBackgroundColor: bgColor,
           accentColor: yellowTheme,
@@ -52,7 +51,6 @@ class MyApp extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(yellowTheme),
             ),
           ),
-          
         ),
         home: AuthenticationWrapper(),
       ),

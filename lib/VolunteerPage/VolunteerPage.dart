@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
-import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
+import '/Authentication/authentication_service.dart';
+import '/Authentication/sign_in_page.dart';
 import '/Screens/HealthForm/HealthForm.dart';
 import '/Screens/PersonalForm/PersonalForm.dart';
 import 'package:flutter/material.dart';
@@ -70,21 +70,23 @@ class VolunteerPageState extends State<VolunteerPage> {
       filteredNames = names;
     });
   }
+
   void initiateSearch(String val) {
     setState(() {
       name = val.trim().toLowerCase();
     });
-    print(name);
+    //print(name);
   }
-  Stream<QuerySnapshot> _ifhasvalue() {
-    
-      return FirebaseFirestore.instance
-                  .collection("Volunter").doc(userid).collection('Patient')
-                  .where("firstName", isGreaterThanOrEqualTo : name)
-                  .snapshots();
 
-    }
-  
+  Stream<QuerySnapshot> _ifhasvalue() {
+    return FirebaseFirestore.instance
+        .collection("Volunter")
+        .doc(userid)
+        .collection('Patient')
+        .where("firstName", isGreaterThanOrEqualTo: name)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> ifhasnovalue() {
     return FirebaseFirestore.instance
         .collection("Volunter")
@@ -98,9 +100,9 @@ class VolunteerPageState extends State<VolunteerPage> {
     this._getNames(); //initialising list of names and state
     super.initState();
   }
-  
-  String name='';
-  
+
+  String name = '';
+  bool isSearch = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,44 +147,71 @@ class VolunteerPageState extends State<VolunteerPage> {
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
                 context.read<AuthenticationService>().signOut();
-                 Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignInPage()),
-                      (route) => false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInPage()),
+                    (route) => false);
               },
             ),
           ],
         ),
       ),
       appBar: AppBar(
-          centerTitle: true,
-          title: TextField(onChanged: (value)=>initiateSearch(value),),
-          iconTheme: IconThemeData(color: headingColor),
+        centerTitle: true,
+        title: Visibility(
+          visible: isSearch,
+          replacement: Text(
+            'My Patients',
+            style: TextStyle(color: headingColor),
           ),
+          child: TextField(
+            style: TextStyle(color: textColor),
+            decoration: InputDecoration(
+              hintText: 'Search',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () => {
+                  setState(() {
+                    isSearch = false;
+                  }),
+                },
+              ),
+            ),
+            onChanged: (value) => initiateSearch(value),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => {
+              setState(() {
+                isSearch = true;
+              }),
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
+        iconTheme: IconThemeData(color: headingColor),
+      ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: name!=''? _ifhasvalue() : ifhasnovalue(),
-          
-              
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return new Text('Loading...');
-              default:
-                return new ListView(
-                  children:
-                      snapshot.data.docs.map((DocumentSnapshot document) {
-                      return Card(
+        stream: name != '' ? _ifhasvalue() : ifhasnovalue(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Text('Loading...');
+            default:
+              return new ListView(
+                children: snapshot.data.docs.map((DocumentSnapshot document) {
+                  return Card(
                     //each patient displayed in a new card
                     color: bgColor,
                     elevation: 1,
                     child: ListTile(
                       tileColor: bgColor,
-                      title: Text("Name:${document['firstName']}",
+                      title: Text("Name: ${document['firstName']}",
                           style: TextStyle(color: textColor)),
-                      subtitle: Text("Age:${document['age']}",
-                          style: TextStyle(color: textColor)), //can change this
+                      subtitle: Text("Age: ${document['age']}",
+                          style: TextStyle(color: textColor)),
                       trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -192,7 +221,8 @@ class VolunteerPageState extends State<VolunteerPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HealthForm(document['firstName'])),
+                                      builder: (context) =>
+                                          HealthForm(document['firstName'])),
                                 );
                               },
                             ),
@@ -212,11 +242,11 @@ class VolunteerPageState extends State<VolunteerPage> {
                           ]),
                     ),
                   );
-                  }).toList(),
-                );
-            }
-          },
-        ),
+                }).toList(),
+              );
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //TODO: NAVIGATE TO ADD PATIENT HERE
