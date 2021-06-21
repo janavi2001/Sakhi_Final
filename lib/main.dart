@@ -31,6 +31,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Sakhi',
         theme: ThemeData.light().copyWith(
+          iconTheme: IconThemeData(
+            color: textColor,
+          ),
           primaryColor: bgColor,
           scaffoldBackgroundColor: bgColor,
           accentColor: yellowTheme,
@@ -54,8 +57,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: AuthenticationWrapper(),
-        
-
       ),
     );
   }
