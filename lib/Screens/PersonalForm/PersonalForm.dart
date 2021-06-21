@@ -105,7 +105,7 @@ class PersonalFormState extends State<PersonalForm> {
           return null;
         },
         onSaved: (String value) {
-          _PatientName = value;
+          _PatientName = value.toLowerCase();
         },
       ),
     );

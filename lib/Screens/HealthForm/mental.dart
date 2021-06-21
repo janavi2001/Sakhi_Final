@@ -33,6 +33,7 @@ class _MentalHealthFormState extends State<MentalHealthForm> {
   bool confidence = false;
   bool worthless = false;
   bool happy = false;
+  bool isfilled=false;
   
 
   final _formKey = GlobalKey<FormState>();
@@ -55,7 +56,9 @@ class _MentalHealthFormState extends State<MentalHealthForm> {
         'depressed':depressed,
         'confidence':confidence,
         'worthless':worthless,
-        'happy':happy
+        'happy':happy,
+        'isfilled':isfilled,
+        'prescription':''
 
 
 
