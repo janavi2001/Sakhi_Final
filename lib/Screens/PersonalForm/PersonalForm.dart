@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/VolunteerPage/VolunteerPage.dart';
 import 'package:firebase_authentication_tutorial/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_authentication_tutorial/components/dropdown.dart';
 
 class PersonalForm extends StatefulWidget {
   @override
@@ -96,7 +97,7 @@ class PersonalFormState extends State<PersonalForm> {
             ),
           ),
         ),
-        maxLength: 10,
+        maxLength: 20,
         validator: (String value) {
           if (value.isEmpty) {
             return 'Patient Name is Required';
@@ -128,7 +129,7 @@ class PersonalFormState extends State<PersonalForm> {
         validator: (String value) {
           int Age = int.tryParse(value);
 
-          if (Age == null || Age <= 0) {
+          if (Age == null || Age >= 0) {
             return 'Age must be greater than 0';
           }
 
@@ -141,30 +142,33 @@ class PersonalFormState extends State<PersonalForm> {
     );
   }
 
-  Widget _buildEducation() {
+   Widget _buildEducation() {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Education',
-          labelStyle: TextStyle(color: textColor),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(10.0),
-            ),
-          ),
-        ),
-        maxLength: 10,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Education is Required';
-          }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          MyDropdown(
+            dropList: [
+              'Primary Education',
+              'Secondary Education',
+              'Bachelors',
+              'Masters',
+              'Doctoral'
+            ],
+            labelText: 'Education',
+            onSelected: (String val) {
+              setState(() => _Education = val);
+            },
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Education is Required';
+              }
 
-          return null;
-        },
-        onSaved: (String value) {
-          _Education = value;
-        },
+              return null;
+            },
+          ),
+        ],
       ),
     );
   }
@@ -230,30 +234,34 @@ class PersonalFormState extends State<PersonalForm> {
   Widget _buildGender() {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Gender',
-          labelStyle: TextStyle(color: textColor),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(10.0),
-            ),
-          ),
-        ),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Gender is Required';
-          }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          MyDropdown(
+            dropList: [
+              'Other',
+              'Male',
+              'Female',
+            ],
+            labelText: 'Gender:',
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Gender is Required';
+              }
 
-          return null;
-        },
-        onSaved: (String value) {
-          _Gender = value;
-        },
+              return null;
+            },
+            onSelected: (String val) {
+              setState(() => _Gender = val);
+            },
+           
+          ),
+        ],
       ),
     );
   }
 
+ 
   Widget _buildProfession() {
     return Padding(
       padding: EdgeInsets.all(10),
@@ -310,30 +318,33 @@ class PersonalFormState extends State<PersonalForm> {
     );
   }
 
-  Widget _buildMarriageStatus() {
+   Widget _buildMarriageStatus() {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Marriage Status',
-          labelStyle: TextStyle(color: textColor),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(10.0),
-            ),
-          ),
-        ),
-        maxLength: 10,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Marriage Status is Required';
-          }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          MyDropdown(
+            dropList: [
+              'Single',
+              'Married',
+              'Widowed',
+              'Seperated',
+              'Divorced'
+            ],
+            labelText: 'Marital Status',
+            onSelected: (String val) {
+              setState(() => _MarriageStatus = val);
+            },
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Marital Status is Required';
+              }
 
-          return null;
-        },
-        onSaved: (String value) {
-          _MarriageStatus = value;
-        },
+              return null;
+            },
+          ),
+        ],
       ),
     );
   }
