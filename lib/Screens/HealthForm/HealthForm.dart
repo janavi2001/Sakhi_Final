@@ -59,6 +59,7 @@ class _HealthFormState extends State<HealthForm> {
         'temperature': temperature.text.trim(),
         'weight': weight.text.trim(),
         'height': height.text.trim(),
+        'date':formattedDate,
       });
       print(widget.firstname.toString());
     } catch (e) {
