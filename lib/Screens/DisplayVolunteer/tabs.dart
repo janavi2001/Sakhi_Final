@@ -18,55 +18,60 @@ class VolunteerTabs extends StatefulWidget {
 }
 
 class _VolunteerTabsState extends State<VolunteerTabs> {
- 
- 
-  
-  Widget build(BuildContext context) {
-    List <String> newdates = [];
-    
-    List <String> _create() {
-      List <String> dates = [];
-      
-      final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      String user = FirebaseAuth.instance.currentUser.uid;
+  List<String> dates = [];
 
-     FirebaseFirestore.instance
-    .collection('Volunter')
-    .doc(user).collection('Patient').doc(widget.firstname.toLowerCase()).collection('Health_Record').
-    get()
-    .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {dates.add(element.id.toString()); });
-      
-      setState(() {
-        newdates = dates;
-      }); 
-      
-      return newdates;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String user = FirebaseAuth.instance.currentUser.uid;
+  @override
+  void initState() {
+    super.initState();
+    print('inside init state');
+    _create();
+    print('after create');
+  }
+
+  @override
+  List<String> _create() {
+    print('inside create');
+    FirebaseFirestore.instance
+        .collection('Volunter')
+        .doc(user)
+        .collection('Patient')
+        .doc(widget.firstname.toLowerCase())
+        .collection('Health_Record')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        this.dates.add(element.id.toString());
+      });
     });
-    
-    }
-    
-  
+    print(this.dates);
+    setState(() {
+      dates = dates;
+    });
+    print(this.dates);
+  }
 
-    String date = '';
+  // FirebaseFirestore.instance
+  //     .collection('Volunter')
+  //     .doc(user)
+  //     .collection('Patient')
+  //     .doc(widget.firstname.toLowerCase())
+  //     .collection('Health_Record')
+  //     .get()
+  //     .then((QuerySnapshot querySnapshot) {
+  //   querySnapshot.docs.forEach((element) {
+  //     dates.add(element.id.toString());
+  //   });
+  //   print(dates);
+
+  String date = '';
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
-          actions: [
-            
-            
-            MyDropdown(
-              dropList: _create(),
-              labelText: 'Dates:',
-              onSelected: (String val) {
-                setState(() => date = val);
-               
-                print(date);
-                print(val);
-              },
-            ),
-          ],
           iconTheme: IconThemeData(
             color: headingColor,
           ),
@@ -85,6 +90,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
               Tab(
                   child: Text('Mental Health',
                       style: TextStyle(color: textColor))),
+              Tab(child: Text('Date', style: TextStyle(color: textColor))),
             ],
           ),
           title: Text(widget.firstname, style: TextStyle(color: headingColor)),
@@ -95,6 +101,20 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
             DisplayPersonal(widget.firstname),
             DisplayPhysical(widget.firstname),
             DisplayMental(),
+            Center(
+              child: MyDropdown(
+                dropList: dates,
+                //dropList: ['yes', 'no'],
+                //dropList: _create(),
+                labelText: 'Dates:',
+                onSelected: (String val) {
+                  setState(() => date = val);
+
+                  //print(date);
+                  //print(val);
+                },
+              ),
+            )
           ],
         ),
       ),
