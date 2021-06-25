@@ -6,7 +6,7 @@ class MyDropdown extends StatefulWidget {
     Key key,
     @required this.labelText,
     @required this.onSelected,
-    @required this.dropList,
+    @required this.dropList, String Function(String value) validator,
   }) : super(key: key);
   final String labelText;
   final List<String> dropList;
