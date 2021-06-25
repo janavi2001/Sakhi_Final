@@ -19,6 +19,8 @@ class VolunteerPageState extends State<VolunteerPage> {
   final TextEditingController _filter = new TextEditingController();
   String useremail = FirebaseAuth.instance.currentUser.email;
   String userid = FirebaseAuth.instance.currentUser.uid;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  
   String firstname;
 
   String currentlyLoggedIn = "manali"; //After authentication?
@@ -106,6 +108,7 @@ class VolunteerPageState extends State<VolunteerPage> {
   bool isSearch = false;
 
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(

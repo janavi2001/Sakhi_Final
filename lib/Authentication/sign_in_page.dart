@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
 import 'package:firebase_authentication_tutorial/Authentication/home_page.dart';
@@ -46,8 +47,27 @@ class SignInPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String user = FirebaseAuth.instance.currentUser.uid;
 
   @override
+  void _creates() async{
+     try {
+      await firestore
+          .collection('Volunter')
+          .doc(user)
+          
+          .set({
+        'Volunteer id': user,
+        
+      });
+     
+    } catch (e) {
+      print(e);
+    }
+
+
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -118,7 +138,9 @@ class SignInPage extends StatelessWidget {
                           password: passwordController.text.trim())
                       .then((value) {
                     if (value == "Signed in") {
+                      _creates();
                       Navigator.pushAndRemoveUntil(
+                  
                           context,
                           MaterialPageRoute(
                               builder: (context) => VolunteerPage()),

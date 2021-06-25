@@ -42,14 +42,14 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
-        this.dates.add(element.id.toString());
+        dates.add(element.id.toString());
       });
     });
-    print(this.dates);
+    
     setState(() {
       dates = dates;
     });
-    print(this.dates);
+  
   }
 
   // FirebaseFirestore.instance
@@ -110,8 +110,8 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
                 onSelected: (String val) {
                   setState(() => date = val);
 
-                  //print(date);
-                  //print(val);
+                  print(dates);
+                  print(val);
                 },
               ),
             )

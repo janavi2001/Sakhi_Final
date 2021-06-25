@@ -29,6 +29,7 @@ class PersonalFormState extends State<PersonalForm> {
   String user = FirebaseAuth.instance.currentUser.uid;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
   void _create() async {
     try {
       await firestore
