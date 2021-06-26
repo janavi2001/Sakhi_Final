@@ -29,7 +29,7 @@ class PersonalFormState extends State<PersonalForm> {
   String user = FirebaseAuth.instance.currentUser.uid;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+
   void _create() async {
     try {
       await firestore
@@ -143,7 +143,7 @@ class PersonalFormState extends State<PersonalForm> {
     );
   }
 
-   Widget _buildEducation() {
+  Widget _buildEducation() {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -255,14 +255,12 @@ class PersonalFormState extends State<PersonalForm> {
             onSelected: (String val) {
               setState(() => _Gender = val);
             },
-           
           ),
         ],
       ),
     );
   }
 
- 
   Widget _buildProfession() {
     return Padding(
       padding: EdgeInsets.all(10),
@@ -319,20 +317,14 @@ class PersonalFormState extends State<PersonalForm> {
     );
   }
 
-   Widget _buildMarriageStatus() {
+  Widget _buildMarriageStatus() {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           MyDropdown(
-            dropList: [
-              'Single',
-              'Married',
-              'Widowed',
-              'Seperated',
-              'Divorced'
-            ],
+            dropList: ['Single', 'Married', 'Widowed', 'Seperated', 'Divorced'],
             labelText: 'Marital Status',
             onSelected: (String val) {
               setState(() => _MarriageStatus = val);
@@ -415,6 +407,7 @@ class PersonalFormState extends State<PersonalForm> {
           'Personal Details of Patient',
           style: TextStyle(color: headingColor),
         ),
+        iconTheme: IconThemeData(color: headingColor),
       ),
       body: SingleChildScrollView(
         child: Theme(
