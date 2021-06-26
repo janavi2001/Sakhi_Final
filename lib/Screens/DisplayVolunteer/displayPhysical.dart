@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,16 +8,15 @@ import 'package:flutter/material.dart';
 
 class DisplayPhysical extends StatelessWidget {
   final String firstname;
-  DisplayPhysical(this.firstname, {Key key}) : super(key: key);
+  final String val;
 
- 
-  
+  DisplayPhysical(this.firstname, this.val, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
     String user = FirebaseAuth.instance.currentUser.uid;
-    
+
     return new Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -27,41 +24,62 @@ class DisplayPhysical extends StatelessWidget {
           padding: EdgeInsets.all(20),
           height: MediaQuery.of(context).size.height,
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('Volunter')
                   .doc(user)
                   .collection("Patient")
-                  .doc(firstname.toLowerCase()).collection("Health_Record")
+                  .doc(firstname.toLowerCase())
+                  .collection("Health_Record")
+                  .doc(val)
                   .snapshots(),
-            builder: (context, snapshot) {
-               if (!snapshot.hasData) {
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
                   return new Text("Loading");
                 }
-                var  userdocument = snapshot.data;
+                var userdocument = snapshot.data;
 
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Display(label: 'Tiredness', value: ''),
-                  Display(label: 'Aches or Pains', value: 'blah blah '),
-                  Display(label: 'Sore Throat', value: 'blah blah'),
-                  Display(label: 'Diarrohea', value: 'blah blah '),
-                  Display(label: 'Conjuctivitis', value: 'blah blah'),
-                  Display(label: 'Headache', value: 'blah blah '),
-                  Display(label: 'Loss of taste', value: 'blah blah'),
-                  Display(label: 'Loss of smell', value: 'blah blah '),
-                  Display(
-                      label: 'Discolouration of fingers/toes', value: 'blah blah'),
-                  Display(label: 'Rashes on skin', value: 'blah blah '),
-                  Display(label: 'Shortness of breath', value: 'blah blah'),
-                  Display(label: 'Chest Pain', value: 'blah blah '),
-                  Display(label: 'Loss of movement', value: 'blah blah '),
-                  Display(label: 'Loss of speech', value: 'blah blah'),
-                ],
-              );
-            }
-          ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Display(
+                        label: 'Tiredness', value: userdocument["tiredness"].toString()),
+                    Display(
+                        label: 'Aches or Pains', value: userdocument["pains"].toString()),
+                    Display(
+                        label: 'Sore Throat',
+                        value: userdocument["soreThroat"].toString()),
+                    Display(
+                        label: 'Diarrohea', value: userdocument["diarrhoea"].toString()),
+                    Display(
+                        label: 'Conjuctivitis',
+                        value: userdocument["conjuctivitis"].toString()),
+                    Display(label: 'Headache', value: userdocument["headache"].toString()),
+                    Display(
+                        label: 'Loss of taste',
+                        value: userdocument["lossTaste"].toString()),
+                    Display(
+                        label: 'Loss of smell',
+                        value: userdocument["lossSmell"].toString()),
+                    Display(
+                        label: 'Discolouration of fingers/toes',
+                        value: userdocument["discoloration"].toString()),
+                    Display(
+                        label: 'Rashes on skin', value: userdocument["rash"].toString()),
+                    Display(
+                        label: 'Shortness of breath',
+                        value: userdocument["breathe"].toString()),
+                    Display(
+                        label: 'Chest Pain', value: userdocument["chestPain"].toString()),
+                    Display(
+                        label: 'Loss of movement',
+                        value: userdocument["lossMovement"].toString()),
+                    Display(
+                        label: 'Loss of speech',
+                        value: userdocument["lossSpeech"].toString()),
+                  ],
+                );
+              }),
         ),
       ),
     );

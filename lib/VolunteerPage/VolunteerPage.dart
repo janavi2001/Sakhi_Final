@@ -20,6 +20,25 @@ class VolunteerPageState extends State<VolunteerPage> {
   String useremail = FirebaseAuth.instance.currentUser.email;
   String userid = FirebaseAuth.instance.currentUser.uid;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  void _creates() async{
+     try {
+      await firestore
+          .collection('Volunter')
+          .doc(userid)
+          
+          .set({
+        'Volunteer id': userid,
+        
+      });
+     
+    } catch (e) {
+      print(e);
+    }
+
+
+  }
+
   
   String firstname;
 
@@ -260,6 +279,7 @@ class VolunteerPageState extends State<VolunteerPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //TODO: NAVIGATE TO ADD PATIENT HERE
+          _creates();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PersonalForm()),

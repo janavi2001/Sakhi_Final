@@ -81,6 +81,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
               Tab(
                   child: Text('Doctor\'s Prescription',
                       style: TextStyle(color: textColor))),
+                      Tab(child: Text('Date', style: TextStyle(color: textColor))),
               Tab(
                   child: Text('Personal Details',
                       style: TextStyle(color: textColor))),
@@ -90,7 +91,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
               Tab(
                   child: Text('Mental Health',
                       style: TextStyle(color: textColor))),
-              Tab(child: Text('Date', style: TextStyle(color: textColor))),
+              
             ],
           ),
           title: Text(widget.firstname, style: TextStyle(color: headingColor)),
@@ -98,9 +99,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
         body: TabBarView(
           children: <Widget>[
             DisplayPrescription(),
-            DisplayPersonal(widget.firstname),
-            DisplayPhysical(widget.firstname),
-            DisplayMental(),
+            
             Center(
               child: MyDropdown(
                 dropList: dates,
@@ -110,11 +109,12 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
                 onSelected: (String val) {
                   setState(() => date = val);
 
-                  print(dates);
-                  print(val);
                 },
               ),
-            )
+            ),
+            DisplayPersonal(widget.firstname),
+            DisplayPhysical(widget.firstname,date),
+            DisplayMental(widget.firstname,date),
           ],
         ),
       ),

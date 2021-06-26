@@ -70,7 +70,7 @@ class PersonalFormState extends State<PersonalForm> {
             ),
           ),
         ),
-        maxLength: 10,
+        maxLength: 25,
         validator: (String value) {
           if (value.isEmpty) {
             return 'Village Name is Required';
@@ -98,7 +98,7 @@ class PersonalFormState extends State<PersonalForm> {
             ),
           ),
         ),
-        maxLength: 20,
+        maxLength: 25,
         validator: (String value) {
           if (value.isEmpty) {
             return 'Patient Name is Required';
@@ -130,7 +130,7 @@ class PersonalFormState extends State<PersonalForm> {
         validator: (String value) {
           int Age = int.tryParse(value);
 
-          if (Age == null || Age >= 0) {
+          if (Age == null || Age <= 0) {
             return 'Age must be greater than 0';
           }
 

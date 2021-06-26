@@ -21,7 +21,6 @@ dependencies:
   cloud_firestore: ^1.0.1
   intl: ^0.17.0
 
-
   provider: ^5.0.0
 
 dev_dependencies:
@@ -32,6 +31,6 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/logo.png
-   - assets/images/avatar.png
+    - assets/images/logo.png
+    - assets/images/avatar.png
   #C:\Users\janav\OneDrive\Desktop\Projects\flutter_firebase_auth_tutorial\assets\logo.jpeg
