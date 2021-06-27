@@ -74,6 +74,7 @@ class _HealthFormState extends State<HealthForm> {
         centerTitle: true,
         title: Text("Health Details of Patient",
             style: TextStyle(color: headingColor)),
+            iconTheme: IconThemeData(color: headingColor),
       ),
       body: SingleChildScrollView(
         child: Form(

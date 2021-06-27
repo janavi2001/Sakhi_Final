@@ -98,6 +98,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
         centerTitle: true,
         title: Text("Physical Health of Patient",
             style: TextStyle(color: headingColor)),
+            iconTheme: IconThemeData(color: headingColor),
       ),
       body: SingleChildScrollView(
         child: Form(

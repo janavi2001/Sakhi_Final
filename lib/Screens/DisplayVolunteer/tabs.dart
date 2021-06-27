@@ -18,7 +18,7 @@ class VolunteerTabs extends StatefulWidget {
 }
 
 class _VolunteerTabsState extends State<VolunteerTabs> {
-  List<String> dates = [];
+  List<String> dates = ["Choose A Date"];
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String user = FirebaseAuth.instance.currentUser.uid;
@@ -52,18 +52,6 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
   
   }
 
-  // FirebaseFirestore.instance
-  //     .collection('Volunter')
-  //     .doc(user)
-  //     .collection('Patient')
-  //     .doc(widget.firstname.toLowerCase())
-  //     .collection('Health_Record')
-  //     .get()
-  //     .then((QuerySnapshot querySnapshot) {
-  //   querySnapshot.docs.forEach((element) {
-  //     dates.add(element.id.toString());
-  //   });
-  //   print(dates);
 
   String date = '';
   @override
@@ -98,7 +86,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
         ),
         body: TabBarView(
           children: <Widget>[
-            DisplayPrescription(),
+            DisplayPrescription(widget.firstname),
             
             Center(
               child: MyDropdown(
@@ -106,6 +94,7 @@ class _VolunteerTabsState extends State<VolunteerTabs> {
                 //dropList: ['yes', 'no'],
                 //dropList: _create(),
                 labelText: 'Dates:',
+                
                 onSelected: (String val) {
                   setState(() => date = val);
 

@@ -13,10 +13,8 @@ class AuthenticationService {
   /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   /// after you called this method if you want to pop all routes.
   Future<void> signOut() async {
-    
     await _firebaseAuth.signOut();
-    
-    print('janavi is fool');
+
   }
 
   /// There are a lot of different ways on how you can do exception handling.
@@ -25,16 +23,16 @@ class AuthenticationService {
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<String> signIn({String email, String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
+      if (e.code == 'user-not-found') {
         return 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         return 'Wrong password provided for that user.';
       }
-      return"Error";
-      
+      return "Error";
     }
   }
   // try {
@@ -55,7 +53,8 @@ class AuthenticationService {
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<String> signUp({String email, String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;

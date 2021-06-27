@@ -18,6 +18,7 @@ class Display extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
+            alignment: Alignment.centerLeft,
             width: MediaQuery.of(context).size.width / 2,
             child: Text(
               label,
@@ -26,6 +27,10 @@ class Display extends StatelessWidget {
             ),
           ),
           Container(
+            alignment: Alignment.centerRight,
+            width: MediaQuery.of(context).size.width / 3,
+          
+            
             child: Text(
               value,
               style: TextStyle(color: textColor),

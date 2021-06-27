@@ -87,6 +87,7 @@ class _MentalHealthFormState extends State<MentalHealthForm> {
         centerTitle: true,
         title: Text("Mental Health of Patient",
             style: TextStyle(color: headingColor)),
+            iconTheme: IconThemeData(color: headingColor),
       ),
       body: SingleChildScrollView(
         child: Form(

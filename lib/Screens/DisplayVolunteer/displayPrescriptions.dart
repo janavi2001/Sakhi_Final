@@ -3,9 +3,15 @@ import '/components/display.dart';
 import '/constants.dart';
 import 'package:flutter/material.dart';
 
-class DisplayPrescription extends StatelessWidget {
-  const DisplayPrescription({Key key}) : super(key: key);
+class DisplayPrescription extends StatefulWidget {
+  final String firstname;
+  const DisplayPrescription(this.firstname,{Key key}) : super(key: key);
 
+  @override
+  _DisplayPrescriptionState createState() => _DisplayPrescriptionState();
+}
+
+class _DisplayPrescriptionState extends State<DisplayPrescription> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -18,8 +24,8 @@ class DisplayPrescription extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Display(label: 'Patient Name', value: 'blah blah'),
-              Display(label: 'Doctor Name', value: 'blah blah '),
+              Display(label: 'Patient Name', value: widget.firstname),
+              Display(label: 'Doctor Name', value: 'N/A'),
               Divider(),
               Text('PRESCRIPTION'),
               Container(

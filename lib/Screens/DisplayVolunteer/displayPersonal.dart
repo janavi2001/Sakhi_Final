@@ -37,7 +37,7 @@ class DisplayPersonal extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return new Text("Loading");
+                  return Center(child: new Text("Choose Date"));
                 }
                 var  userdocument = snapshot.data;
                 return Column(

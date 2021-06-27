@@ -16,13 +16,13 @@ class PersonalFormState extends State<PersonalForm> {
   String _VillageName;
   String _PatientName;
   String _Age;
-  String _Education;
+  String _Education='Primary Education';
   String _Caste;
   String _FamilyMembers;
-  String _Gender;
+  String _Gender="Other";
   String _Profession;
   String _WorkingClass;
-  String _MarriageStatus;
+  String _MarriageStatus="Single";
   String _PhoneNumber;
   String _Address;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -329,13 +329,7 @@ class PersonalFormState extends State<PersonalForm> {
             onSelected: (String val) {
               setState(() => _MarriageStatus = val);
             },
-            validator: (String value) {
-              if (value.isEmpty) {
-                return 'Marital Status is Required';
-              }
-
-              return null;
-            },
+            
           ),
         ],
       ),
