@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authentication_tutorial/components/dropdown.dart';
-import 'package:firebase_authentication_tutorial/constants.dart';
+import '/components/dropdown.dart';
+import '/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'displayMental.dart';

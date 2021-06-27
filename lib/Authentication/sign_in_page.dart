@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
-import 'package:firebase_authentication_tutorial/Authentication/home_page.dart';
-import 'package:firebase_authentication_tutorial/VolunteerPage/VolunteerPage.dart';
-import 'package:firebase_authentication_tutorial/constants.dart';
+import '/Authentication/authentication_service.dart';
+import '/Authentication/home_page.dart';
+import '/VolunteerPage/VolunteerPage.dart';
+import '/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

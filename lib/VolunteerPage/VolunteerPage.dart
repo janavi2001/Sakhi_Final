@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authentication_tutorial/Screens/DisplayVolunteer/tabs.dart';
+import '/Screens/DisplayVolunteer/tabs.dart';
 import '/Authentication/authentication_service.dart';
 import '/Authentication/sign_in_page.dart';
 import '/Screens/HealthForm/HealthForm.dart';

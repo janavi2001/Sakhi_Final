@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_authentication_tutorial/Authentication/authentication_service.dart';
-import 'package:firebase_authentication_tutorial/Authentication/sign_in_page.dart';
-import 'package:firebase_authentication_tutorial/Screens/doctorscreen.dart';
-import 'package:firebase_authentication_tutorial/constants.dart';
+import '/Authentication/authentication_service.dart';
+import '/Authentication/sign_in_page.dart';
+import '/Screens/doctorscreen.dart';
+import '/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_authentication_tutorial/VolunteerPage/VolunteerPage.dart';
+import '/VolunteerPage/VolunteerPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

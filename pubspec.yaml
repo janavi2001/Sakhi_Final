@@ -1,4 +1,4 @@
-name: firebase_authentication_tutorial
+name: sakhi
 description: A new Flutter project.
 
 publish_to: "none"
@@ -26,6 +26,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png" 
 
 flutter:
   uses-material-design: true
